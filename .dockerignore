@@ -1,0 +1,9 @@
+api-organize-my-mind/node_modules
+api-organize-my-mind/dist
+*/node_modules
+node_modules
+*.log
+.env
+docker-compose.yml
+Dockerfile
+init.sql
