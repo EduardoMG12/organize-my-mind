@@ -6,6 +6,8 @@ import { Annotation } from 'src/entities/annotation.entity';
 import { Repository } from 'typeorm';
 import { CreateAnnotationDto } from './dto/create.dto';
 import { User } from 'src/entities/user.entity';
+import { UserNotFoundException } from 'src/execeptions/user.exception';
+import { AnnotationNotFoundException, TitleRequiredException } from 'src/execeptions/annotation.exception';
 
 @Injectable()
 export class AnnotationsService {
@@ -15,11 +17,11 @@ export class AnnotationsService {
     ) { }
 
     private validateUser(user: User): void {
-        if (!user) throw new NotFoundException("User not found");
+        if (!user) throw new UserNotFoundException();
     }
 
     private validateTitle(title: string): void {
-        if (!title) throw new NotFoundException("Title is required");
+        if (!title) throw new TitleRequiredException;
     }
 
     private async findUserAnnotation(id: number, user: User): Promise<Annotation> {
@@ -100,7 +102,7 @@ export class AnnotationsService {
         const annotation = await this.findUserAnnotation(id, user)
 
         if (!annotation) {
-            throw new Error("Annotation not found")
+            throw new AnnotationNotFoundException()
         }
 
         return this.annotationsRepository.remove(annotation)
