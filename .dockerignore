@@ -4,6 +4,4 @@ api-organize-my-mind/dist
 node_modules
 *.log
 .env
-docker-compose.yml
-Dockerfile
 init.sql

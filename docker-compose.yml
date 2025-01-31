@@ -12,14 +12,20 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    #   - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
 
   api:
     build: .
     container_name: api_organize_my_mind
     restart: always
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     environment:
       DATABASE_HOST: mysql
       DATABASE_PORT: 3306
@@ -29,8 +35,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
       - /app/node_modules
-    command: ["sh", "-c", "npm run start:dev"]
+    command: ["bun", "run", "start:dev"]
+
 volumes:
   mysql_data:
