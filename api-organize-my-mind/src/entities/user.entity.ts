@@ -1,8 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, BeforeInsert } from "typeorm";
 import { Annotation } from "./annotation.entity";
 import { Challenge } from "./challenge.entity";
 import { Goal } from "./goal.entity";
-
 
 @Entity("users")
 export class User {
@@ -16,7 +15,7 @@ export class User {
     email: string;
 
     @Column()
-    password_hash: string;
+    password: string;
 
     @CreateDateColumn()
     created_at: Date;
