@@ -7,7 +7,7 @@ import { UpdateAnnotationDto } from './dto/update.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('annotations')
-
+// @UseGuards(AuthGuard)
 export class AnnotationsController {
     constructor(private readonly annotationsService: AnnotationsService) { }
 

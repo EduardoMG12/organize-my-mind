@@ -1,20 +1,22 @@
-import { Module } from '@nestjs/common';
+import { AuthController } from './auth/auth.controller';
+import { Body, Controller, Module, Post, Request, Response } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AnnotationsModule } from './annotations/annotations.module';
 import { AnnotationsController } from './annotations/annotations.controller';
-import { ChallengesModule } from './challenges/challenges.module';
 import { ChallengesController } from './challenges/challenges.controller';
-import { GoalsModule } from './goals/goals.module';
 import { GoalsController } from './goals/goals.controller';
-import { UsersModule } from './users/users.module';
 import { UsersController } from './users/users.controller';
+import { ChallengesModule } from './challenges/challenges.module';
+import { GoalsModule } from './goals/goals.module';
+import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
-        ConfigModule.forRoot(),
+        ConfigModule.forRoot({ isGlobal: true }),
         TypeOrmModule.forRoot({
             type: 'mysql',
             host: process.env.DATABASE_HOST || 'localhost',
@@ -26,9 +28,10 @@ import { ConfigModule } from '@nestjs/config';
             migrations: [__dirname + '/migrations/*{.ts,.js}'],
             synchronize: false, // Usaremos migrations
         }),
-        AnnotationsModule, ChallengesModule, GoalsModule, UsersModule
+        AnnotationsModule, ChallengesModule, GoalsModule, UsersModule, AuthModule
     ],
-    controllers: [AppController, AnnotationsController, ChallengesController, GoalsController, UsersController],
+    controllers: [
+        AppController, AnnotationsController, ChallengesController, GoalsController, UsersController],
     providers: [AppService],
 })
 export class AppModule { }
