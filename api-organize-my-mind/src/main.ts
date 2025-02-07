@@ -13,7 +13,8 @@ async function bootstrap() {
     app.useGlobalGuards(new JwtAuthGuard(reflector));
 
     app.useGlobalPipes(new ValidationPipe({
-        transform: true
+        transform: true,
+        transformOptions: { excludeExtraneousValues: true }
     }));
 
     await app.listen(process.env.PORT ?? 3000);
