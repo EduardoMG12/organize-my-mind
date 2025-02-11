@@ -103,15 +103,17 @@ export class AnnotationsService {
 
     }
 
-    async update(updateAnnotationDto: UpdateAnnotationDto, user: User): Promise<AnnotationDto> {
-        this.validateUser(user);
+    async update(updateAnnotationDto: UpdateAnnotationDto, user: findAllAnnotationDto): Promise<AnnotationDto> {
+        const userFetch = await this.usersService.findById(user.userId)
+
+        this.validateUser(userFetch);
 
         const { id, title, content } = updateAnnotationDto;
 
-        const annotation = await this.findUserAnnotation(id, user.id)
+        const annotation = await this.findUserAnnotation(id, userFetch.id)
 
         if (!annotation) {
-            throw new Error("Annotation not found")
+            throw new BadRequestException("Annotation not found")
         }
 
         annotation.title = title ?? annotation.title

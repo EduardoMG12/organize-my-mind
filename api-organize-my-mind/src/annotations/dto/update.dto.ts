@@ -1,10 +1,18 @@
 import { Expose } from 'class-transformer';
-import { IsInt, IsNotEmpty } from 'class-validator';
-import { CreateAnnotationDto } from './create.dto';
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateAnnotationDto extends CreateAnnotationDto {
+export class UpdateAnnotationDto {
     @IsNotEmpty()
     @IsInt()
     @Expose()
     id: number;
+
+    @IsNotEmpty()
+    @IsString()
+    @Expose()
+    title: string;
+
+    @IsString()
+    @Expose()
+    content?: string;
 }
