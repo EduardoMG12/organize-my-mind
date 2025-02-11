@@ -2,10 +2,6 @@ import { Expose } from 'class-transformer';
 import { IsInt, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UpdateOrderDto {
-    @IsNumber()
-    @IsNotEmpty()
-    @Expose()
-    user: number;
 
     @IsNotEmpty()
     @IsInt()
@@ -13,7 +9,7 @@ export class UpdateOrderDto {
     id: number;
 
     @IsNotEmpty()
-    @IsInt()
+    @IsNumber()
     @Expose()
     newPosition: number;
 }

@@ -1,6 +1,6 @@
 import { UpdateAnnotationDto } from './dto/update.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Annotation } from 'src/entities/annotation.entity';
 import { Repository } from 'typeorm';
@@ -29,8 +29,8 @@ export class AnnotationsService {
         if (!title) throw new TitleRequiredException;
     }
 
-    private async findUserAnnotation(id: number, user: User): Promise<Annotation> {
-        const annotation = await this.annotationsRepository.findOne({ where: { id, user } });
+    private async findUserAnnotation(id: number, userId: number): Promise<Annotation> {
+        const annotation = await this.annotationsRepository.findOne({ where: { id, user: { id: userId } } });
         if (!annotation) throw new NotFoundException("Annotation not found");
         return annotation;
     }
@@ -72,21 +72,23 @@ export class AnnotationsService {
         return savedAnnotation;
     }
 
-    async updateOrder(updateOrderDto: UpdateOrderDto, user: User): Promise<Annotation[]> {
-        this.validateUser(user)
+    async updateOrder(updateOrderDto: UpdateOrderDto, user: findAllAnnotationDto): Promise<Annotation[]> {
+        const userFetch = await this.usersService.findById(user.userId); // remove password with this return
+        this.validateUser(userFetch)
 
         const { id, newPosition } = updateOrderDto
 
-        const annotationToMove = await this.findUserAnnotation(id, user);
+        const annotationToMove = await this.findUserAnnotation(id, userFetch.id);
 
         if (annotationToMove.position === newPosition) {
-            throw new Error("You don't move annotation here")
+            throw new BadRequestException("You don't move annotation here")
         }
 
         const allAnnotations = await this.annotationsRepository.find({
-            where: { user },
+            where: { user: { id: userFetch.id } },
             order: { position: "ASC" }
         })
+
 
         const filteredAnnotations = allAnnotations.filter(a => a.id !== id)
 
@@ -97,7 +99,7 @@ export class AnnotationsService {
             position: index
         }))
 
-        return this.annotationsRepository.save(updateAnnotations)
+        return this.annotationsRepository.save(updateAnnotations).then((savedAnnotations) => savedAnnotations.sort((a, b) => a.position - b.position))
 
     }
 
@@ -106,7 +108,7 @@ export class AnnotationsService {
 
         const { id, title, content } = updateAnnotationDto;
 
-        const annotation = await this.findUserAnnotation(id, user)
+        const annotation = await this.findUserAnnotation(id, user.id)
 
         if (!annotation) {
             throw new Error("Annotation not found")
@@ -119,17 +121,15 @@ export class AnnotationsService {
     }
 
     async findAll(user: findAllAnnotationDto): Promise<Annotation[]> {
-        console.log(user, "id")
         const userFetch = await this.usersService.findById(user.userId);
         this.validateUser(userFetch)
-        console.log(userFetch, "user")
 
         return this.annotationsRepository.findBy({ user: { id: user.userId } });
     }
 
     async delete(id: number, user: User): Promise<Annotation> {
 
-        const annotation = await this.findUserAnnotation(id, user)
+        const annotation = await this.findUserAnnotation(id, user.id)
 
         if (!annotation) {
             throw new AnnotationNotFoundException()

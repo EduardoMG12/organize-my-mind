@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { RegisterDto } from 'src/auth/dto/register.dto';
+import { SafeUser } from 'src/auth/dto/safeUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +21,7 @@ export class UsersService {
         return this.usersRepository.findOne({ where: { email } });
     }
 
-    async findById(id: number): Promise<User> {
+    async findById(id: number): Promise<SafeUser> {
         const user = await this.usersRepository.findOne({ where: { id } })
         if (!user) {
             throw new Error("User not found")
