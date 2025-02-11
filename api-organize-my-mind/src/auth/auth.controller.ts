@@ -7,7 +7,6 @@ import { SafeUser } from './dto/safeUser.dto';
 import { toPlainToInstance } from 'src/utils/toPlainToInstance';
 import { AccessToken } from './dto/accessToken.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-// create routesAuth doc and 
 // read about @SerializeOptionsType for returns controller include plainToInstance global for Exclude and Expose
 
 @ApiTags('Auth')
