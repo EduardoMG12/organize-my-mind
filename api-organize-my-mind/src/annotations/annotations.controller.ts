@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query } from '@nestjs/common';
 import { AnnotationsService } from './annotations.service';
 import { CreateAnnotationDto } from './dto/create.dto';
 import { User } from 'src/entities/user.entity';
-import { Annotation } from 'src/entities/annotation.entity';
 import { UpdateAnnotationDto } from './dto/update.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { toPlainToInstance } from 'src/utils/toPlainToInstance';
+import { findAllAnnotationDto } from './dto/findAll.dto';
+import { AnnotationDto } from './dto/annotation.dto';
 
 @Controller('annotations')
 // @UseGuards(AuthGuard)
@@ -12,29 +14,28 @@ export class AnnotationsController {
     constructor(private readonly annotationsService: AnnotationsService) { }
 
     @Post()
-    async create(@Body() annotationDto: CreateAnnotationDto,
-        @Query("user") user: User): Promise<Annotation> {
-        return this.annotationsService.create(annotationDto, user);
+    async create(@Body() annotationDto: CreateAnnotationDto): Promise<AnnotationDto> {
+        return toPlainToInstance(AnnotationDto, await this.annotationsService.create(annotationDto));
     }
 
     @Get()
-    async findAll(@Query("user") user: User): Promise<Annotation[]> {
-        return this.annotationsService.findAll(user);
+    async findAll(@Query() user: findAllAnnotationDto): Promise<AnnotationDto[]> {
+        return toPlainToInstance(AnnotationDto, await this.annotationsService.findAll(user));
     }
 
     @Put("Order")
-    async updateOrder(@Body() updateOrderDto: UpdateOrderDto, @Query("üser") user: User) {
-        return this.annotationsService.updateOrder(updateOrderDto, user)
+    async updateOrder(@Body() updateOrderDto: UpdateOrderDto, @Query("user") user: User): Promise<AnnotationDto[]> {
+        return toPlainToInstance(AnnotationDto, await this.annotationsService.updateOrder(updateOrderDto, user));
     }
 
     @Put()
-    async update(@Body() annotationDto: UpdateAnnotationDto, @Query("user") user: User): Promise<Annotation> {
-        return this.annotationsService.update(annotationDto, user);
+    async update(@Body() annotationDto: UpdateAnnotationDto, @Query("user") user: User): Promise<AnnotationDto> {
+        return toPlainToInstance(AnnotationDto, await this.annotationsService.update(annotationDto, user));
     }
 
     @Delete()
     async delete(id: number, @Query("user") user: User) {
-        this.annotationsService.delete(id, user);
+        toPlainToInstance(AnnotationDto, await this.annotationsService.delete(id, user));
     }
 
 

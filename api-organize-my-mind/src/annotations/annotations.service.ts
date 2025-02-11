@@ -8,15 +8,20 @@ import { CreateAnnotationDto } from './dto/create.dto';
 import { User } from 'src/entities/user.entity';
 import { UserNotFoundException } from 'src/execeptions/user.exception';
 import { AnnotationNotFoundException, TitleRequiredException } from 'src/execeptions/annotation.exception';
+import { SafeUser } from 'src/auth/dto/safeUser.dto';
+import { UsersService } from 'src/users/users.service';
+import { findAllAnnotationDto } from './dto/findAll.dto';
+import { AnnotationDto } from './dto/annotation.dto';
 
 @Injectable()
 export class AnnotationsService {
     constructor(
         @InjectRepository(Annotation)
         private annotationsRepository: Repository<Annotation>,
+        private usersService: UsersService,
     ) { }
 
-    private validateUser(user: User): void {
+    private validateUser(user: User | SafeUser): void {
         if (!user) throw new UserNotFoundException();
     }
 
@@ -31,18 +36,40 @@ export class AnnotationsService {
     }
 
 
-    async create(annotationDto: CreateAnnotationDto, user: User): Promise<Annotation> {
+    async create(annotationDto: CreateAnnotationDto): Promise<Annotation> {
+        const user = await this.usersService.findById(annotationDto.userId);
+
         this.validateUser(user);
 
-        const { title, content } = annotationDto
+        const { title, content } = annotationDto;
 
-        this.validateTitle(title)
+        this.validateTitle(title);
 
-        await this.annotationsRepository.increment({ user }, "position", 1)
+        const annotation = await this.annotationsRepository.findOne({
+            where: { user: { id: user.id } }, // Busca pela anotação do usuário, usando o ID
+            order: { position: "DESC" },
+        });
 
-        const newAnnotation = this.annotationsRepository.create({ user, title, content, position: 0 })
+        if (annotation) {
+            await this.annotationsRepository.increment(
+                { id: annotation.id },
+                "position",
+                1
+            );
+        }
 
-        return this.annotationsRepository.save(newAnnotation);
+        await this.annotationsRepository.increment({ user: { id: user.id } }, "position", 1);
+
+        const newAnnotation = this.annotationsRepository.create({
+            user,
+            title,
+            content,
+            position: 0
+        });
+
+        const savedAnnotation = await this.annotationsRepository.save(newAnnotation);
+
+        return savedAnnotation;
     }
 
     async updateOrder(updateOrderDto: UpdateOrderDto, user: User): Promise<Annotation[]> {
@@ -74,7 +101,7 @@ export class AnnotationsService {
 
     }
 
-    async update(updateAnnotationDto: UpdateAnnotationDto, user: User): Promise<Annotation> {
+    async update(updateAnnotationDto: UpdateAnnotationDto, user: User): Promise<AnnotationDto> {
         this.validateUser(user);
 
         const { id, title, content } = updateAnnotationDto;
@@ -91,10 +118,13 @@ export class AnnotationsService {
         return this.annotationsRepository.save(annotation)
     }
 
-    async findAll(user: User): Promise<Annotation[]> {
-        this.validateUser(user)
+    async findAll(user: findAllAnnotationDto): Promise<Annotation[]> {
+        console.log(user, "id")
+        const userFetch = await this.usersService.findById(user.userId);
+        this.validateUser(userFetch)
+        console.log(userFetch, "user")
 
-        return this.annotationsRepository.findBy({ user });
+        return this.annotationsRepository.findBy({ user: { id: user.userId } });
     }
 
     async delete(id: number, user: User): Promise<Annotation> {

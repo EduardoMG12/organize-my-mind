@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 
 @Entity("annotations")
@@ -20,4 +20,7 @@ export class Annotation {
 
     @CreateDateColumn()
     created_at: Date;
+
+    @UpdateDateColumn()
+    update_at: Date;
 }
