@@ -6,7 +6,7 @@ export function setupSwagger(app: INestApplication) {
         .setTitle('Organize My Mind API')
         .setDescription('API documentation for user authentication and management.')
         .setVersion('1.0')
-        .addBearerAuth() // Adiciona suporte a autenticação JWT
+        .addBearerAuth()
         .build();
 
     const document = SwaggerModule.createDocument(app, config);
