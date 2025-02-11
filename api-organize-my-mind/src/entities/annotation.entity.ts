@@ -23,4 +23,7 @@ export class Annotation {
 
     @UpdateDateColumn()
     update_at: Date;
+
+    @Column({ nullable: true })
+    deleted_at: Date;
 }

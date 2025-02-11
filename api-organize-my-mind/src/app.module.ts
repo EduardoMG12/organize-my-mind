@@ -13,6 +13,9 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { DeleteSchedulerService } from './delete-scheduler/delete-scheduler.service';
+import { DeleteSchedulerController } from './delete-scheduler/delete-scheduler.controller';
+import { DeleteSchedulerModule } from './delete-scheduler/delete-scheduler.module';
 
 @Module({
     imports: [
@@ -26,12 +29,12 @@ import { AuthModule } from './auth/auth.module';
             database: process.env.DATABASE_NAME || 'organize_my_mind',
             entities: [__dirname + '/**/*.entity{.ts,.js}'],
             migrations: [__dirname + '/migrations/*{.ts,.js}'],
-            synchronize: false, // Usaremos migrations
+            synchronize: true,
         }),
-        AnnotationsModule, ChallengesModule, GoalsModule, UsersModule, AuthModule
+        AnnotationsModule, ChallengesModule, GoalsModule, UsersModule, AuthModule, DeleteSchedulerModule
     ],
     controllers: [
-        AppController, AnnotationsController, ChallengesController, GoalsController, UsersController],
-    providers: [AppService],
+        AppController, AnnotationsController, ChallengesController, GoalsController, UsersController, DeleteSchedulerController],
+    providers: [AppService, DeleteSchedulerService],
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
 import { Expose } from "class-transformer";
 
-export class findAllAnnotationDto {
+export class UserAnnotationDto {
 
     @Expose()
     userId: number;
