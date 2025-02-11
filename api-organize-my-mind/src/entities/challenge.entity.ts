@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToMany, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 import { ChallengeHistory } from "./challenge-history.entity";
 
@@ -28,6 +28,9 @@ export class Challenge {
 
     @Column({ default: 0 })
     position: number;
+
+    @UpdateDateColumn()
+    updated_at: Date;
 
     @CreateDateColumn()
     created_at: Date;

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm";
 import { User } from "./user.entity";
 
 @Entity("goals")
@@ -23,6 +23,9 @@ export class Goal {
 
     @Column({ default: 0 })
     position: number;
+
+    @UpdateDateColumn()
+    updated_at: Date;
 
     @CreateDateColumn()
     created_at: Date;
