@@ -2,7 +2,7 @@ FROM node
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package.json pnpm-lock.yaml ./
 RUN corepack enable
 RUN pnpm install
 

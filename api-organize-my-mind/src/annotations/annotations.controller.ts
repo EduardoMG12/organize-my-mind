@@ -58,5 +58,5 @@ export class AnnotationsController {
     async delete(@Body() deleteAnnotationDto: DeleteAnnotationDto, @Query() user: UserAnnotationDto): Promise<AnnotationDto> {
         console.log(deleteAnnotationDto)
         return toPlainToInstance(AnnotationDto, await this.annotationsService.delete(deleteAnnotationDto, user));
-    }
+    }// remember in future implement restore to delete
 }

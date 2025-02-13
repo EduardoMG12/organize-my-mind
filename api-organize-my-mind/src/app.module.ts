@@ -17,6 +17,8 @@ import { DeleteSchedulerService } from './delete-scheduler/delete-scheduler.serv
 import { DeleteSchedulerController } from './delete-scheduler/delete-scheduler.controller';
 import { DeleteSchedulerModule } from './delete-scheduler/delete-scheduler.module';
 
+console.log(`sla`, process.env.DATABASE_HOST)
+
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),

@@ -3,6 +3,8 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+console.log(`sla`, process.env.DATABASE_HOST)
+
 export const AppDataSource = new DataSource({
     type: "mysql",
     host: process.env.DATABASE_HOST || "localhost",
