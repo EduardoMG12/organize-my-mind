@@ -12,15 +12,16 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-    #   - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "user", "-ppassword"]
       interval: 10s
       retries: 5
       start_period: 10s
 
   api:
-    build: .
+    build:
+      context: ./api-organize-my-mind
+      dockerfile: Dockerfile
     container_name: api_organize_my_mind
     restart: always
     depends_on:
@@ -35,8 +36,24 @@ services:
     ports:
       - "3000:3000"
     volumes:
+      - ./api-organize-my-mind:/app
       - /app/node_modules
-    command: ["bun", "run", "start:dev"]
+    command: >
+      sh -c "npm run start:dev"
+
+#   frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile
+#     container_name: frontend_organize_my_mind
+#     restart: always
+#     depends_on:
+#       - api
+#     ports:
+#       - "8080:80"
+#     volumes:
+#       - ./frontend:/app
+#       - /app/node_modules
 
 volumes:
   mysql_data:

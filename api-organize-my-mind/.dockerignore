@@ -1,0 +1,17 @@
+api-organize-my-mind/node_modules
+api-organize-my-mind/dist
+*/node_modules
+node_modules
+*.log
+init.sql
+node_modules
+dist
+.git
+.gitignore
+Dockerfile
+docker-compose.yml
+.env
+.cache
+.vscode
+.DS_Store
+*.log

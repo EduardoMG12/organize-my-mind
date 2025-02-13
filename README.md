@@ -1,5 +1,7 @@
 # 🚀 Organize My Mind - Project Setup Guide
 
+commando util baixar tudo e excluir referente ao docker docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -a -q) && docker volume prune -f && docker network prune -f && docker builder prune -f
+
 ## 📌 Prerequisites
 
 -   🐳 Docker and Docker Compose installed
