@@ -2,7 +2,7 @@ import { Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { userIdDto } from './userId.dto';
 
-export class CreateAnnotationDto extends userIdDto {
+export class CreateAnnotationDto {
     @IsNotEmpty()
     @IsString()
     @Expose()

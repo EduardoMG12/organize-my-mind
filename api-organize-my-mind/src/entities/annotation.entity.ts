@@ -7,13 +7,17 @@ export class Annotation {
     id: number;
 
     @ManyToOne(() => User, user => user.annotations, { onDelete: "CASCADE" })
-    user: User;
+    owner: User;
 
     @Column({ length: 255 })
     title: string;
 
     @Column("text")
     content: string;
+
+    @Column({ default: 'PRIVATE' })
+    visibility: 'PUBLIC' | 'UNLISTED' | 'PRIVATE';
+
 
     @Column({ default: 0 })
     position: number;

@@ -30,24 +30,24 @@ export class AnnotationsService {
         if (!title) throw new TitleRequiredException;
     }
 
-    private async findUserAnnotation(id: number, user: UserAnnotationDto): Promise<Annotation> {
-        const annotation = await this.annotationsRepository.findOne({ where: { id, user: { id: user.userId } } });
+    private async findUserAnnotation(id: number, userId: number): Promise<Annotation> {
+        const annotation = await this.annotationsRepository.findOne({ where: { id, owner: { id: userId } } });
         if (!annotation) throw new NotFoundException("Annotation not found");
         return annotation;
     }
 
 
-    async create(annotationDto: CreateAnnotationDto): Promise<Annotation> {
-        const user = await this.usersService.findById(annotationDto.userId);
+    async create(annotationDto: CreateAnnotationDto, userId:number): Promise<Annotation> {
+        const owner = await this.usersService.findById(userId);
 
-        this.validateUser(user);
+        this.validateUser(owner);
 
         const { title, content } = annotationDto;
 
         this.validateTitle(title);
 
         const annotation = await this.annotationsRepository.findOne({
-            where: { user: { id: user.id } }, // Busca pela anotação do usuário, usando o ID
+            where: { owner: { id: owner.id } }, // Busca pela anotação do usuário, usando o ID
             order: { position: "DESC" },
         });
 
@@ -59,10 +59,10 @@ export class AnnotationsService {
             );
         }
 
-        await this.annotationsRepository.increment({ user: { id: user.id } }, "position", 1);
+        await this.annotationsRepository.increment({ owner: { id: owner.id } }, "position", 1);
 
         const newAnnotation = this.annotationsRepository.create({
-            user,
+            owner,
             title,
             content,
             position: 0
@@ -73,20 +73,20 @@ export class AnnotationsService {
         return savedAnnotation;
     }
 
-    async updateOrder(updateOrderDto: UpdateOrderDto, user: UserAnnotationDto): Promise<Annotation[]> {
-        const userFetch = await this.usersService.findById(user.userId);
+    async updateOrder(updateOrderDto: UpdateOrderDto, userId: number): Promise<Annotation[]> {
+        const userFetch = await this.usersService.findById(userId);
         this.validateUser(userFetch)
 
         const { id, newPosition } = updateOrderDto
 
-        const annotationToMove = await this.findUserAnnotation(id, user);
+        const annotationToMove = await this.findUserAnnotation(id, userId);
 
         if (annotationToMove.position === newPosition) {
             throw new BadRequestException("You don't move annotation here")
         }
 
         const allAnnotations = await this.annotationsRepository.find({
-            where: { user: { id: userFetch.id } },
+            where: { owner: { id: userFetch.id } },
             order: { position: "ASC" }
         })
 
@@ -104,14 +104,14 @@ export class AnnotationsService {
 
     }
 
-    async update(updateAnnotationDto: UpdateAnnotationDto, user: UserAnnotationDto): Promise<AnnotationDto> {
-        const userFetch = await this.usersService.findById(user.userId)
+    async update(updateAnnotationDto: UpdateAnnotationDto, userId: number): Promise<AnnotationDto> {
+        const userFetch = await this.usersService.findById(userId)
 
         this.validateUser(userFetch);
 
         const { id, title, content } = updateAnnotationDto;
 
-        const annotation = await this.findUserAnnotation(id, user)
+        const annotation = await this.findUserAnnotation(id, userId)
 
         if (!annotation) {
             throw new BadRequestException("Annotation not found")
@@ -123,21 +123,19 @@ export class AnnotationsService {
         return this.annotationsRepository.save(annotation)
     }
 
-    async findAll(user: UserAnnotationDto): Promise<Annotation[]> {
-        const userFetch = await this.usersService.findById(user.userId);
+    async findAll(userId: number): Promise<Annotation[]> {
+        const userFetch = await this.usersService.findById(userId);
         this.validateUser(userFetch)
 
-        return this.annotationsRepository.findBy({ user: { id: user.userId }, deleted_at: IsNull() });
+        return this.annotationsRepository.findBy({ owner: { id: userId }, deleted_at: IsNull() });
     }
 
     async findAnnotationsToDelete(dateDelete: Date): Promise<Annotation[]> {
         return this.annotationsRepository.find({ where: { deleted_at: LessThan(dateDelete) } })
     }
 
-    async delete(deleteDto: DeleteAnnotationDto, user: UserAnnotationDto): Promise<Annotation> {
-        console.log(deleteDto)
-        console.log(user)
-        const annotation = await this.findUserAnnotation(deleteDto.id, user)
+    async delete(deleteDto: DeleteAnnotationDto, userId: number): Promise<Annotation> {
+        const annotation = await this.findUserAnnotation(deleteDto.id, userId)
 
         if (!annotation) {
             throw new AnnotationNotFoundException()

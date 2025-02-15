@@ -5,7 +5,7 @@ export class AnnotationDto {
     @Expose()
     id: number;
 
-    user: User;
+    owner: User;
 
     @Expose()
     title: string;
