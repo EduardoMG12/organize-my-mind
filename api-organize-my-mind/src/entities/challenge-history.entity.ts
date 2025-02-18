@@ -1,23 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm";
-import { Challenge } from "./challenge.entity";
+// import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm";
+// import { Challenge } from "./challenge.entity";
 
-@Entity("challenge_history")
-export class ChallengeHistory {
-    @PrimaryGeneratedColumn()
-    id: number;
+// @Entity("challenge_history")
+// export class ChallengeHistory {
+//     @PrimaryGeneratedColumn('uuid')
+//     id: string;
 
-    @ManyToOne(() => Challenge, challenge => challenge.history, { onDelete: "CASCADE" })
-    challenge: Challenge;
+//     @ManyToOne(() => Challenge, challenge => challenge.history, { onDelete: "CASCADE" })
+//     challenge: Challenge;
 
-    @Column("date")
-    completion_date: Date;
+//     @Column("date")
+//     completion_date: Date;
 
-    @Column("text", { nullable: true })
-    note: string;
+//     @Column("text", { nullable: true })
+//     note: string;
 
-    @CreateDateColumn()
-    created_at: Date;
+//     @CreateDateColumn()
+//     created_at: Date;
 
-    @UpdateDateColumn()
-    updated_at: Date;
-}
+//     @UpdateDateColumn()
+//     updated_at: Date;
+// }

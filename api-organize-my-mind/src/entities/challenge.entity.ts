@@ -1,6 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToMany, UpdateDateColumn } from "typeorm";
-import { User } from "./user.entity";
-import { ChallengeHistory } from "./challenge-history.entity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from "typeorm";
+import { Item } from "./item.entity";
 
 
 @Entity("challenges")
@@ -8,14 +7,8 @@ export class Challenge {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, user => user.challenges, { onDelete: "CASCADE" })
-    user: User;
-
-    @Column({ length: 255 })
-    title: string;
-
-    @Column("text", { nullable: true })
-    description: string;
+    @ManyToOne(() => Item, item => item.id, { onDelete: "CASCADE" })
+    item: Item;
 
     @Column()
     frequency: number;
@@ -26,15 +19,6 @@ export class Challenge {
     @Column({ default: 0 })
     priority: number;
 
-    @Column({ default: 0 })
-    position: number;
-
-    @UpdateDateColumn()
-    updated_at: Date;
-
-    @CreateDateColumn()
-    created_at: Date;
-
-    @OneToMany(() => ChallengeHistory, history => history.challenge)
-    history: ChallengeHistory[];
+    // @OneToMany(() => ChallengeHistory, history => history.challenge)
+    // history: ChallengeHistory[];
 }

@@ -1,24 +1,17 @@
 import { Expose } from "class-transformer";
-import { User } from "src/entities/user.entity";
+import { ItemDto } from "src/item/dto/item.dto";
 
 export class AnnotationDto {
     @Expose()
     id: number;
-
-    owner: User;
 
     @Expose()
     title: string;
 
     @Expose()
     content: string;
-
+    
     @Expose()
-    position: number;
+    item: ItemDto;
 
-    @Expose()
-    created_at: Date;
-
-    @Expose()
-    update_at: Date;
 }

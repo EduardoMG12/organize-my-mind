@@ -1,18 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, BeforeInsert } from "typeorm";
-import { Annotation } from "./annotation.entity";
-import { Challenge } from "./challenge.entity";
-import { Goal } from "./goal.entity";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn, DeleteDateColumn} from "typeorm";
+import { Item } from "./item.entity";
 
 @Entity("users")
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
     username: string;
 
     @Column({ length: 100 })
-    name: string;
+    fullName: string;
 
     @Column({ length: 100, unique: true })
     email: string;
@@ -29,12 +27,13 @@ export class User {
     @CreateDateColumn()
     created_at: Date;
 
-    @OneToMany(() => Annotation, annotation => annotation.owner)
-    annotations: Annotation[];
+    @UpdateDateColumn()
+    updated_at: Date;
 
-    @OneToMany(() => Challenge, challenge => challenge.user)
-    challenges: Challenge[];
+    @DeleteDateColumn()
+    deleted_at: Date;
 
-    @OneToMany(() => Goal, goal => goal.user)
-    goals: Goal[];
+    @OneToMany(() => Item, item => item.owner)
+    items: Item[];
+
 }

@@ -1,32 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm";
-import { User } from "./user.entity";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";;
+import { Item } from "./item.entity";
 
 @Entity("goals")
 export class Goal {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, user => user.goals, { onDelete: "CASCADE" })
-    user: User;
-
-    @Column({ length: 255 })
-    title: string;
-
-    @Column("text", { nullable: true })
-    description: string;
+    @ManyToOne(() => Item, item => item.id, { onDelete: "CASCADE" })
+    item: Item;
 
     @Column("date", { nullable: true })
     deadline: Date;
+
+    @Column({ default: false })
+    completed: boolean;
 
     @Column({ default: 0 })
     priority: number;
 
     @Column({ default: 0 })
     position: number;
-
-    @UpdateDateColumn()
-    updated_at: Date;
-
-    @CreateDateColumn()
-    created_at: Date;
 }

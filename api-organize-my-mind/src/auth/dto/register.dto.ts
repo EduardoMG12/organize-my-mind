@@ -7,6 +7,10 @@ export class RegisterDto extends LoginDto {
     @ApiProperty({ example: 'john Smith', description: 'User full name' })
     @IsString()
     @Expose()
-    name: string
+    fullName: string
+
+    @IsString()
+    @Expose()
+    username:string
 
 }

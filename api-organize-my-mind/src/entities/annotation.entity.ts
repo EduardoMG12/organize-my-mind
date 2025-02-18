@@ -1,33 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm";
-import { User } from "./user.entity";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, JoinColumn } from "typeorm";
+import { Item } from "./item.entity";
 
 @Entity("annotations")
 export class Annotation {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, user => user.annotations, { onDelete: "CASCADE" })
-    owner: User;
+    @ManyToOne(() => Item, item => item.id, { onDelete: "CASCADE", eager: true })
+    @JoinColumn()
+    item: Item;
 
-    @Column({ length: 255 })
-    title: string;
-
-    @Column("text")
+    @Column("text", { nullable: true })
     content: string;
 
-    @Column({ default: 'PRIVATE' })
-    visibility: 'PUBLIC' | 'UNLISTED' | 'PRIVATE';
-
-
-    @Column({ default: 0 })
-    position: number;
-
-    @CreateDateColumn()
-    created_at: Date;
-
-    @UpdateDateColumn()
-    update_at: Date;
-
-    @Column({ nullable: true })
-    deleted_at: Date;
 }

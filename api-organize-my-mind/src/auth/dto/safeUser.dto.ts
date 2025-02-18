@@ -1,27 +1,28 @@
 import { Expose } from 'class-transformer';
-import { Annotation } from 'src/entities/annotation.entity';
-import { Challenge } from 'src/entities/challenge.entity';
-import { Goal } from 'src/entities/goal.entity';
+import { Item } from 'src/entities/item.entity';
 
 export class SafeUser {
     @Expose()
-    id: number;
+    id: string;
 
     @Expose()
-    name: string;
+    username: string;
+
+    @Expose()
+    fullName: string;
 
     @Expose()
     email: string;
 
     @Expose()
+    isPublic: boolean;
+
+    @Expose()
+    bio: string;
+
+    @Expose()
     created_at: Date;
 
     @Expose()
-    annotations: Annotation[];
-
-    @Expose()
-    challenges: Challenge[];
-
-    @Expose()
-    goals: Goal[];
+    items: Item[];
 }

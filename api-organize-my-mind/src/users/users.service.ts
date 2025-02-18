@@ -1,4 +1,4 @@
-import { Body, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
@@ -21,7 +21,7 @@ export class UsersService {
         return this.usersRepository.findOne({ where: { email } });
     }
 
-    async findById(id: number): Promise<SafeUser> {
+    async findById(id: string): Promise<SafeUser> {
         const user = await this.usersRepository.findOne({ where: { id } })
         if (!user) {
             throw new Error("User not found")
