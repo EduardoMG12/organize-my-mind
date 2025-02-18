@@ -1,6 +1,42 @@
 # 🚀 Organize My Mind - Project Setup Guide
 
-commando util baixar tudo e excluir referente ao docker docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -a -q) && docker volume prune -f && docker network prune -f && docker builder prune -f
+primeiro rode o docker do banco 
+
+```sh
+
+docker-compose up db --build
+# Apos isso considere dar esse comando para ver se o banco esta rodando(healthy)
+docker ps
+
+```
+apos isso rode o typeorm para popular o banco de dados:
+
+```
+cd ./api-organize-my-mind
+
+pnpm install
+
+pnpm migration:run
+
+```
+
+apos isso rode o projeto
+
+```
+
+docker-compose up api #Caso queira ocultar as logs da api utilize o -d ao final do comando.
+
+```
+
+Caso queira limpar os dockers utilize estes 2 comandos abaixo:
+
+```
+
+docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -a -q) && docker volume prune -f && docker network prune -f && docker builder prune -f
+
+docker-compose down -v
+
+```
 
 ## 📌 Prerequisites
 
