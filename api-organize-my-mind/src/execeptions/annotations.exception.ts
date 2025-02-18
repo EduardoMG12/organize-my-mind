@@ -7,6 +7,13 @@ export class AnnotationNotFoundException extends BaseException {
     }
 }
 
+export class RestoreAnnotationNotFoundException extends BaseException {
+    constructor() {
+        super("This annotation don't deleted or not found", HttpStatus.NOT_FOUND);
+    }
+}
+
+
 export class TitleRequiredException extends BaseException {
     constructor() {
         super("Title is required", HttpStatus.BAD_REQUEST);

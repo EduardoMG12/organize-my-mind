@@ -13,12 +13,16 @@ export class DeleteSchedulerService {
         this.logger.log('Begin clean of deleted annotations...');
 
         const fifteenDaysAgo = new Date();
+        const thirdDaysAgo = new Date();
         fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
+        thirdDaysAgo.setDate(fifteenDaysAgo.getDate() - 30);
 
         try {
-            const annotationsToDelete = await this.annotationsService.findAnnotationsToDelete(fifteenDaysAgo);
-            const deleteCount = await this.annotationsService.deletePermanently(annotationsToDelete);
-            this.logger.log(`Permanently deleted annotations: ${deleteCount}`)
+            const annotationsToDeleteToUser = await this.annotationsService.findAnnotationsToDelete(fifteenDaysAgo);
+            const deleteToUser = await this.annotationsService.deleteAnnotationsFromUser(annotationsToDeleteToUser);
+            const annotationsToDeletePermanently = await this.annotationsService.findAnnotationsToDelete(thirdDaysAgo);
+            const deleteCount = await this.annotationsService.deletePermanently(annotationsToDeletePermanently);
+            this.logger.log(`Permanently deleted annotations: ${deleteCount} and deleted for users: ${deleteToUser}`)
         } catch (err) {
             this.logger.log(`Error clean annotations: ${err}`)
         }

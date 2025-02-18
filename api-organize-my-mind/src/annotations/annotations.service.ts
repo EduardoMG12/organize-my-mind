@@ -1,17 +1,18 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Annotation } from 'src/entities/annotation.entity';
-import { IsNull, LessThan, Repository } from 'typeorm';
+import { IsNull, LessThan, Not, Repository } from 'typeorm';
 import { CreateAnnotationDto } from './dto/create.dto';
 import { User } from 'src/entities/user.entity';
 import { UserNotFoundException } from 'src/execeptions/user.exception';
 import { SafeUser } from 'src/auth/dto/safeUser.dto';
 import { UsersService } from 'src/users/users.service';
-import { AnnotationNotFoundException, TitleRequiredException } from 'src/execeptions/annotations.exception';
+import { AnnotationNotFoundException, RestoreAnnotationNotFoundException, TitleRequiredException } from 'src/execeptions/annotations.exception';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { UpdateAnnotationDto } from './dto/update.dto';
 import { AnnotationSafeDto } from './dto/annotationSafe.dto';
 import { DeleteAnnotationDto } from './dto/delete.dto';
+import { AnnotationDto } from './dto/annotation.dto';
 
 @Injectable()
 export class AnnotationsService {
@@ -31,9 +32,29 @@ export class AnnotationsService {
 
     private async findUserAnnotation(id: string, userId: string): Promise<Annotation> {
         const annotation = await this.annotationsRepository.findOne({ where: { id, owner: { id: userId } } });
-        if (!annotation) throw new NotFoundException("Annotation not found");
+        if (!annotation) throw new AnnotationNotFoundException()
         return annotation;
     }
+
+    private async reorderPositions(userId: string): Promise<void> {
+        const allAnnotations = await this.annotationsRepository.find({
+            where: { owner: { id: userId } },
+            order: { position: "ASC" }
+        });
+    
+        const activeAnnotations = allAnnotations.filter(a => a.deleted_at === null);
+        activeAnnotations.forEach((annotation, index) => {
+            annotation.position = index;
+        });
+    
+        const deletedAnnotations = allAnnotations.filter(a => a.deleted_at !== null);
+        deletedAnnotations.forEach((annotation, index) => {
+            annotation.position = activeAnnotations.length + index;
+        });
+    
+        await this.annotationsRepository.save([...activeAnnotations, ...deletedAnnotations]);
+    }
+    
 
 
     async create(annotationDto: CreateAnnotationDto, userId:string): Promise<AnnotationSafeDto> {
@@ -43,18 +64,8 @@ export class AnnotationsService {
 
         this.validateTitle(title);
 
-        const annotation = await this.annotationsRepository.findOne({
-            where: { owner: { id: owner.id } },
-            order: { position: "DESC" },
-        });
+        await this.annotationsRepository.update({owner: {id: owner.id}},{ position: () => "position + 1"})
 
-        if (annotation) {
-            await this.annotationsRepository.increment(
-                { id: annotation.id },
-                "position",
-                1
-            );
-        }
 
         const newAnnotation = this.annotationsRepository.create({
             owner,
@@ -73,11 +84,21 @@ export class AnnotationsService {
         this.validateUser(userFetch);
     
         return this.annotationsRepository.find({
-            where: { owner: { id: userId, deleted_at: IsNull() } },
+            where: { owner: { id: userId },  deleted_at: IsNull() },
              order: { position: "ASC" },
         });
     }
     
+    async findAllDeleted(userId: string): Promise<AnnotationDto[]> {
+        const userFetch = await this.usersService.findById(userId);
+        this.validateUser(userFetch);
+    
+
+        return this.annotationsRepository.find({
+            where: { owner: { id: userId }, deleted_at: Not(IsNull()), isActive:true},
+            order: { deleted_at: "ASC" },
+        });
+    }
 
     async updateOrder(updateOrderDto: UpdateOrderDto, userId: string): Promise<Annotation[]> {
         const userFetch = await this.usersService.findById(userId);
@@ -137,34 +158,53 @@ export class AnnotationsService {
 
     async delete(deleteDto: DeleteAnnotationDto, userId: string): Promise<AnnotationSafeDto> {
         const annotation = await this.findUserAnnotation(deleteDto.id, userId)
-
-        if (!annotation) {
-            throw new AnnotationNotFoundException()
-        }
-
+        
         if (annotation.deleted_at === null) {
             annotation.deleted_at = new Date();
-            return this.annotationsRepository.save(annotation);
-        } else {
-            return this.annotationsRepository.remove(annotation);
+            const annotationModify = await this.annotationsRepository.save(annotation);
+
+            await this.reorderPositions(userId);
+            
+            return annotationModify
         }
+        throw new AnnotationNotFoundException()
+        
+    }
+
+    async toogleAnnotationActivity(deleteDto: DeleteAnnotationDto, userId: string): Promise<AnnotationSafeDto> {
+        const annotation = await this.findUserAnnotation(deleteDto.id, userId)
+        
+        annotation.isActive = !annotation.isActive
+        return await this.annotationsRepository.save(annotation);
+        
+    }
+
+    async deleteAnnotationsFromUser(annotations: Annotation[]): Promise<number> {
+        if (!annotations.length) return 0;
+        annotations.forEach((annotation) => annotation.isActive = false)
+        const result = await this.annotationsRepository.save(annotations);
+
+        return result.length;
     }
 
     async deletePermanently(annotations: Annotation[]): Promise<number> {
+        if (!annotations.length) return 0;
         const result = await this.annotationsRepository.remove(annotations);
-        return result.length || 0;
+    
+        return result.length;
     }
 
     async restore(deleteDto: DeleteAnnotationDto, userId: string): Promise<AnnotationSafeDto> {
         const annotation = await this.findUserAnnotation(deleteDto.id, userId);
     
-        if (!annotation.deleted_at) {
-            throw new AnnotationNotFoundException();
+        if(annotation.deleted_at == null && annotation.isActive == true){
+            throw new RestoreAnnotationNotFoundException()
         }
-    
         annotation.deleted_at = null;
-        annotation.activy = true;
-        
-        return this.annotationsRepository.save(annotation);
+        annotation.isActive = true;
+        const annotationModify = await this.annotationsRepository.save(annotation);
+
+        await this.reorderPositions(userId);
+        return annotationModify 
     }
 }
