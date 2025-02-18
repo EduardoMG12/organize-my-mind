@@ -1,30 +1,29 @@
 import { Expose } from "class-transformer";
 import { SafeUser } from "src/auth/dto/safeUser.dto";
-import { ItemType } from "src/entities/item-types.entity";
 
+export enum Visibility {
+    PUBLIC = "public",
+    PRIVATE = "private",
+    FRIENDS_ONLY = "friends_only"
+}
 
-export class ItemDto {
+export class AnnotationSafeDto {
     @Expose()
     id: string;
-
-    @Expose()
-    owner: SafeUser;
-
-    @Expose()
-    type: ItemType;
 
     @Expose()
     title: string;
 
     @Expose()
+    content: string;
+
+    @Expose()
     description: string;
 
     @Expose()
-    visibility: "PUBLIC" | "UNLISTED" | "PRIVATE";
+    visibility: Visibility;
 
     @Expose()
     position: number;
 
-    @Expose()
-    activy: boolean;
 }

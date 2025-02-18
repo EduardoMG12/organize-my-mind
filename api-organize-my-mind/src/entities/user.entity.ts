@@ -1,5 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn, DeleteDateColumn} from "typeorm";
-import { Item } from "./item.entity";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, UpdateDateColumn, DeleteDateColumn, JoinTable} from "typeorm";
+import { Annotation } from "./annotation.entity";
+// import { Challenge } from "./challenge.entity";
+// import { FlashcardSet } from "./flash-card-set.entity";
+// import { Goal } from "./goal.entity";
+// import { Habit } from "./habit.entity";
 
 @Entity("users")
 export class User {
@@ -24,6 +28,26 @@ export class User {
     @Column()
     password: string;
 
+    @OneToMany(() => Annotation, annotation => annotation.owner)
+    @JoinTable()
+    annotations: Annotation[];
+
+    // @OneToMany(() => Challenge, challenge => challenge.owner)
+    // @JoinTable()
+    // challenges: Challenge[];
+
+    // @OneToMany(() => FlashcardSet, flashcardSet => flashcardSet.owner)
+    // @JoinTable()
+    // flashcardSets: FlashcardSet[];
+
+    // @OneToMany(() => Goal, goal => goal.owner)
+    // @JoinTable()
+    // goals: Goal[];
+
+    // @OneToMany(() => Habit, habit => habit.owner)
+    // @JoinTable()
+    // habits: Habit[];
+
     @CreateDateColumn()
     created_at: Date;
 
@@ -32,8 +56,5 @@ export class User {
 
     @DeleteDateColumn()
     deleted_at: Date;
-
-    @OneToMany(() => Item, item => item.owner)
-    items: Item[];
 
 }

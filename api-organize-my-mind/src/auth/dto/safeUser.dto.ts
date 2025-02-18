@@ -1,5 +1,4 @@
 import { Expose } from 'class-transformer';
-import { Item } from 'src/entities/item.entity';
 
 export class SafeUser {
     @Expose()
@@ -23,6 +22,4 @@ export class SafeUser {
     @Expose()
     created_at: Date;
 
-    @Expose()
-    items: Item[];
 }

@@ -6,8 +6,6 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { ItemTypesModule } from './item-types/item-types.module';
-import { ItemModule } from './item/item.module';
 import { AnnotationsModule } from './annotations/annotations.module';
 
 @Module({
@@ -24,7 +22,7 @@ import { AnnotationsModule } from './annotations/annotations.module';
             migrations: [__dirname + '/migrations/*{.ts,.js}'],
             synchronize: true,
         }),
-         ChallengesModule, GoalsModule, UsersModule, AuthModule,  ItemTypesModule, ItemModule, AnnotationsModule
+         ChallengesModule, GoalsModule, UsersModule, AuthModule, AnnotationsModule
     ],
     controllers: [],
     providers: [AppService],

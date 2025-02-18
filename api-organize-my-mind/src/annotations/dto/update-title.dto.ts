@@ -1,16 +1,14 @@
 import { Expose } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
-import { userIdDto } from './userId.dto';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateTitleAnnotationDto extends userIdDto {
+export class UpdateTitleAnnotationDto  {
     @IsNotEmpty()
     @IsString()
     @Expose()
     title: string;
 
     @IsNotEmpty()
-    @IsInt()
     @Expose()
-    id: number;
+    id: string;
 
 }
