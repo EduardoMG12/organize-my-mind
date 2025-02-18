@@ -31,7 +31,7 @@ export class Annotation {
     position: number;
 
     @Column({ default: true})
-    activy: boolean;
+    isActive: boolean;
 
     @CreateDateColumn()
     created_at: Date;
@@ -39,6 +39,6 @@ export class Annotation {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @Column({ nullable: true })
-    deleted_at: Date|null;
+    @Column({type:"date", nullable: true })
+    deleted_at: Date | null;
 }
