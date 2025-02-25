@@ -1,25 +1,24 @@
-import { Expose } from 'class-transformer';
+import { Expose } from "class-transformer";
 
 export class SafeUser {
-    @Expose()
-    id: string;
+	@Expose()
+	id: string;
 
-    @Expose()
-    username: string;
+	@Expose()
+	username: string;
 
-    @Expose()
-    fullName: string;
+	@Expose()
+	fullName: string;
 
-    @Expose()
-    email: string;
+	@Expose()
+	email: string;
 
-    @Expose()
-    isPublic: boolean;
+	@Expose()
+	isPublic: boolean;
 
-    @Expose()
-    bio: string;
+	@Expose()
+	bio: string;
 
-    @Expose()
-    created_at: Date;
-
+	@Expose()
+	created_at: Date;
 }

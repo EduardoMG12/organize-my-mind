@@ -1,18 +1,18 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { FlashcardService } from './flashcard.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { FlashcardService } from "./flashcard.service";
 
-describe('FlashcardService', () => {
-  let service: FlashcardService;
+describe("FlashcardService", () => {
+	let service: FlashcardService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [FlashcardService],
-    }).compile();
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			providers: [FlashcardService],
+		}).compile();
 
-    service = module.get<FlashcardService>(FlashcardService);
-  });
+		service = module.get<FlashcardService>(FlashcardService);
+	});
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+	it("should be defined", () => {
+		expect(service).toBeDefined();
+	});
 });

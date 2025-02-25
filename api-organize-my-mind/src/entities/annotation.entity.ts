@@ -1,44 +1,55 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn} from "typeorm";
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	ManyToOne,
+	CreateDateColumn,
+	UpdateDateColumn,
+} from "typeorm";
 import { User } from "./user.entity";
 
 export enum Visibility {
-    PUBLIC = "public",
-    PRIVATE = "private",
-    FRIENDS_ONLY = "friends_only"
+	PUBLIC = "public",
+	PRIVATE = "private",
+	FRIENDS_ONLY = "friends_only",
 }
 
 @Entity("annotations")
 export class Annotation {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+	@PrimaryGeneratedColumn("uuid")
+	id: string;
 
-    @Column("text", { nullable: true })
-    content: string;
-    
-    @Column({ length: 255 })
-    title: string;
+	@Column("text", { nullable: true })
+	content: string;
 
-    @Column("text", { nullable: true })
-    description: string;
+	@Column({ length: 255 })
+	title: string;
 
-    @ManyToOne(() => User, user => user.annotations, { onDelete: "CASCADE" })
-    owner: User;
+	@Column("text", { nullable: true })
+	description: string;
 
-    @Column({ type: "enum", enum: Visibility, default: "PRIVATE" })
-    visibility: Visibility;
+	@ManyToOne(
+		() => User,
+		(user) => user.annotations,
+		{ onDelete: "CASCADE" },
+	)
+	owner: User;
 
-    @Column()
-    position: number;
+	@Column({ type: "enum", enum: Visibility, default: "PRIVATE" })
+	visibility: Visibility;
 
-    @Column({ default: true})
-    isActive: boolean;
+	@Column()
+	position: number;
 
-    @CreateDateColumn()
-    created_at: Date;
+	@Column({ default: true })
+	isActive: boolean;
 
-    @UpdateDateColumn()
-    updated_at: Date;
+	@CreateDateColumn()
+	created_at: Date;
 
-    @Column({type:"date", nullable: true })
-    deleted_at: Date | null;
+	@UpdateDateColumn()
+	updated_at: Date;
+
+	@Column({ type: "date", nullable: true })
+	deleted_at: Date | null;
 }

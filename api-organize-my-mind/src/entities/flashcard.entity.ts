@@ -1,29 +1,29 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { FlashcardCollection } from './flashcards.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { FlashcardCollection } from "./flashcards.entity";
 
-@Entity('flashcard')
+@Entity("flashcard")
 export class Flashcard {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+	@PrimaryGeneratedColumn("uuid")
+	id: string;
 
-    @ManyToOne(
-        () => FlashcardCollection,
-        (flashcardCollection) => flashcardCollection.flashcards,
-    )
-    flashcards: FlashcardCollection;
+	@ManyToOne(
+		() => FlashcardCollection,
+		(flashcardCollection) => flashcardCollection.flashcards,
+	)
+	flashcards: FlashcardCollection;
 
-    @Column('text')
-    front: string;
+	@Column("text")
+	front: string;
 
-    @Column('text')
-    back: string;
+	@Column("text")
+	back: string;
 
-    @Column({ nullable: true })
-    description: string;
+	@Column({ nullable: true })
+	description: string;
 
-    @Column()
-    position: number;
+	@Column()
+	position: number;
 
-    @Column()
-    isActive: boolean;
+	@Column()
+	isActive: boolean;
 }

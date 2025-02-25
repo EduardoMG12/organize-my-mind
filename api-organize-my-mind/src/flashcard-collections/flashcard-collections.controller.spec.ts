@@ -1,18 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { FlashcardCollectionsController } from './flashcard-collections.controller';
+import { Test, TestingModule } from "@nestjs/testing";
+import { FlashcardCollectionsController } from "./flashcard-collections.controller";
 
-describe('FlashcardCollectionsController', () => {
-  let controller: FlashcardCollectionsController;
+describe("FlashcardCollectionsController", () => {
+	let controller: FlashcardCollectionsController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [FlashcardCollectionsController],
-    }).compile();
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			controllers: [FlashcardCollectionsController],
+		}).compile();
 
-    controller = module.get<FlashcardCollectionsController>(FlashcardCollectionsController);
-  });
+		controller = module.get<FlashcardCollectionsController>(
+			FlashcardCollectionsController,
+		);
+	});
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+	it("should be defined", () => {
+		expect(controller).toBeDefined();
+	});
 });

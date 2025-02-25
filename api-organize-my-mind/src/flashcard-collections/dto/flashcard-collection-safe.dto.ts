@@ -1,35 +1,35 @@
-import { Expose } from 'class-transformer';
+import { Expose } from "class-transformer";
 
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class FlashcardCollectionSafeDto {
-    @Expose()
-    id: string;
+	@Expose()
+	id: string;
 
-    @IsString()
-    @Expose()
-    title: string;
+	@IsString()
+	@Expose()
+	title: string;
 
-    @IsOptional()
-    @IsString()
-    @Expose()
-    description?: string;
+	@IsOptional()
+	@IsString()
+	@Expose()
+	description?: string;
 
-    @IsString()
-    @Expose()
-    visibility: string; // isso sera um enum
+	@IsString()
+	@Expose()
+	visibility: string; // isso sera um enum
 
-    @IsNumber()
-    @Expose()
-    position: number;
+	@IsNumber()
+	@Expose()
+	position: number;
 
-    @IsBoolean()
-    @Expose()
-    isActive: boolean;
+	@IsBoolean()
+	@Expose()
+	isActive: boolean;
 
-    @Expose()
-    created_at: Date;
+	@Expose()
+	created_at: Date;
 
-    @Expose()
-    updated_at: Date;
+	@Expose()
+	updated_at: Date;
 }
