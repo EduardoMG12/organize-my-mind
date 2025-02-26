@@ -2,18 +2,18 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Annotation } from "src/entities/annotation.entity";
 import { IsNull, LessThan, Not, Repository } from "typeorm";
-import type { UsersService } from "src/users/users.service";
+import { UsersService } from "src/users/users.service";
 import {
 	AnnotationNotFoundException,
 	RestoreAnnotationNotFoundException,
 	TitleRequiredException,
 } from "src/execeptions/annotations.exception";
-import type { UpdateOrderDto } from "./dto/update-order.dto";
-import type { UpdateAnnotationDto } from "./dto/update.dto";
-import type { AnnotationSafeDto } from "./dto/annotationSafe.dto";
-import type { DeleteAnnotationDto } from "./dto/delete.dto";
-import type { AnnotationDto } from "./dto/annotation.dto";
-import type { CreateAnnotationDto } from "./dto/create.dto";
+import { UpdateOrderDto } from "./dto/update-order.dto";
+import { UpdateAnnotationDto } from "./dto/update.dto";
+import { AnnotationSafeDto } from "./dto/annotationSafe.dto";
+import { DeleteAnnotationDto } from "./dto/delete.dto";
+import { AnnotationDto } from "./dto/annotation.dto";
+import { CreateAnnotationDto } from "./dto/create.dto";
 
 @Injectable()
 export class AnnotationsService {

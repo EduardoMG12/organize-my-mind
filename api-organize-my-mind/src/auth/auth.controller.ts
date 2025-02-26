@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from "@nestjs/common";
-import type { AuthService } from "./auth.service";
-import type { LoginDto } from "./dto/login.dto";
-import type { RegisterDto } from "./dto/register.dto";
+import { AuthService } from "./auth.service";
+import { LoginDto } from "./dto/login.dto";
+import { RegisterDto } from "./dto/register.dto";
 import { Public } from "./decorators/public.decorator";
 import { SafeUser } from "./dto/safeUser.dto";
 import { toPlainToInstance } from "src/utils/toPlainToInstance";

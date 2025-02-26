@@ -10,8 +10,8 @@ export const AppDataSource = new DataSource({
 	username: process.env.DATABASE_USER || "user",
 	password: process.env.DATABASE_PASSWORD || "password",
 	database: process.env.DATABASE_NAME || "organize_my_mind",
-	entities: [__dirname + "/entities/*.entity{.ts,.js}"],
-	migrations: [__dirname + "/migrations/*{.ts,.js}"], // i don't no if need src
+	entities: [`${__dirname}/entities/*.entity{.ts,.js}`],
+	migrations: [`${__dirname}/migrations/*{.ts,.js}`], // i don't no if need src
 	synchronize: true,
 	logging: true,
 });

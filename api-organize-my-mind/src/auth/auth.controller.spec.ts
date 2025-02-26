@@ -1,11 +1,11 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
-import type { SafeUser } from "./dto/safeUser.dto";
-import type { AccessToken } from "./dto/accessToken.dto";
-import type { RegisterDto } from "./dto/register.dto";
-import type { LoginDto } from "./dto/login.dto";
-import type { UsersService } from "../users/users.service";
+import { SafeUser } from "./dto/safeUser.dto";
+import { AccessToken } from "./dto/accessToken.dto";
+import { RegisterDto } from "./dto/register.dto";
+import { LoginDto } from "./dto/login.dto";
+import { UsersService } from "../users/users.service";
 
 describe("AuthController", () => {
 	let authController: AuthController;

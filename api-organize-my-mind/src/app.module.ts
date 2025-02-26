@@ -21,8 +21,8 @@ import { FlashcardCollectionsModule } from "./flashcard-collections/flashcard-co
 			username: process.env.DATABASE_USER || "user",
 			password: process.env.DATABASE_PASSWORD || "password",
 			database: process.env.DATABASE_NAME || "organize_my_mind",
-			entities: [__dirname + "/**/*.entity{.ts,.js}"],
-			migrations: [__dirname + "/migrations/*{.ts,.js}"],
+			entities: [`${__dirname}/**/*.entity{.ts,.js}`],
+			migrations: [`${__dirname}/migrations/*{.ts,.js}`],
 			synchronize: true,
 		}),
 		ChallengesModule,
@@ -32,7 +32,7 @@ import { FlashcardCollectionsModule } from "./flashcard-collections/flashcard-co
 		AnnotationsModule,
 		FlashcardCollectionsModule,
 	],
-	controllers: [FlashcardCollectionsController],
-	providers: [AppService, FlashcardCollectionsService],
+	controllers: [],
+	providers: [AppService],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Post, Put } from "@nestjs/common";
-import type { AnnotationsService } from "./annotations.service";
+import { AnnotationsService } from "./annotations.service";
 import { CreateAnnotationDto } from "./dto/create.dto";
 import { toPlainToInstance } from "src/utils/toPlainToInstance";
 import { AnnotationSafeDto } from "./dto/annotationSafe.dto";

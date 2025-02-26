@@ -1,11 +1,11 @@
 import { FlashcardCollection } from "./../entities/flashcards.entity";
 import { Injectable, NotFoundException } from "@nestjs/common";
-import type { CreateFlashcardCollectionDto } from "./dto/create-flashcard-collections.dto";
-import type { FlashcardCollectionSafeDto } from "./dto/flashcard-collection-safe.dto";
+import { CreateFlashcardCollectionDto } from "./dto/create-flashcard-collections.dto";
+import { FlashcardCollectionSafeDto } from "./dto/flashcard-collection-safe.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import type { UsersService } from "src/users/users.service";
-import type { Repository } from "typeorm";
-import type { UpdateFlashcardCollectionDto } from "./dto/update-flashcards-collection.dto";
+import { UsersService } from "src/users/users.service";
+import { Repository } from "typeorm";
+import { UpdateFlashcardCollectionDto } from "./dto/update-flashcards-collection.dto";
 
 @Injectable()
 export class FlashcardCollectionsService {

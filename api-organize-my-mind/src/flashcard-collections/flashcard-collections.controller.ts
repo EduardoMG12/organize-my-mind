@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, Patch, Post } from "@nestjs/common";
 import { GetUserId } from "src/decorators/getUserId";
 import { toPlainToInstance } from "src/utils/toPlainToInstance";
 import { FlashcardCollectionSafeDto } from "./dto/flashcard-collection-safe.dto";
-import type { FlashcardCollectionsService } from "./flashcard-collections.service";
-import type { CreateFlashcardCollectionDto } from "./dto/create-flashcard-collections.dto";
+import { FlashcardCollectionsService } from "./flashcard-collections.service";
+import { CreateFlashcardCollectionDto } from "./dto/create-flashcard-collections.dto";
 
 @Controller("flashcard-collections")
 export class FlashcardCollectionsController {
