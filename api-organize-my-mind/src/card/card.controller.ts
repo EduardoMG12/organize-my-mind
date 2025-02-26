@@ -1,11 +1,7 @@
-import { Controller, Post } from "@nestjs/common";
-import { GetUserId } from "src/decorators/getUserId";
-import { toPlainToInstance } from "src/utils/toPlainToInstance";
-import { CreateFlashcardDto } from "./dto/create-flashcard.dto";
-import { FlashcardSafeDto } from "./dto/flashcardSafe.dto";
+import { Controller } from "@nestjs/common";
 
-@Controller("flashcard")
-export class FlashcardController {
+@Controller("card")
+export class CardController {
 	// @Post()
 	// async create(
 	//     @GetUserId() userId: string,

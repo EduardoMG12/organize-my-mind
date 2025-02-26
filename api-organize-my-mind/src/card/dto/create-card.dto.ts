@@ -1,22 +1,13 @@
 import { Expose } from "class-transformer";
-
 import {
-	IsBoolean,
 	IsInt,
 	IsNotEmpty,
 	IsOptional,
 	IsString,
+	IsUUID,
 } from "class-validator";
 
-export class FlashcardSafeDto {
-	@Expose()
-	id: string;
-
-	@IsNotEmpty()
-	@IsString()
-	@Expose()
-	title: string;
-
+export class CreateCardDto {
 	@IsString()
 	@Expose()
 	front: string;
@@ -25,13 +16,21 @@ export class FlashcardSafeDto {
 	@Expose()
 	back: string;
 
+	@IsOptional()
+	@IsString()
+	@Expose()
+	description?: string;
+}
+
+export class CardSafeDto extends CreateCardDto {
+	@IsString()
+	@IsUUID()
+	@Expose()
+	id: string;
+
 	@IsInt()
 	@Expose()
 	position: number;
-
-	@IsBoolean()
-	@Expose()
-	isActive: boolean;
 
 	@IsOptional()
 	@IsString()

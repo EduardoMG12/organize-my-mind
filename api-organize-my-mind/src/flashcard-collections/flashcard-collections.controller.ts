@@ -1,9 +1,13 @@
 import { Body, Controller, Delete, Get, Patch, Post } from "@nestjs/common";
-import { GetUserId } from "src/decorators/getUserId";
-import { toPlainToInstance } from "src/utils/toPlainToInstance";
-import { FlashcardCollectionSafeDto } from "./dto/flashcard-collection-safe.dto";
+import { GetUserId } from "src/common/decorators/getUserId.decorator";
+import { toPlainToInstance } from "src/common/utils/toPlainToInstance";
+import {
+	FlashcardsCollectionSafeMissingFlashcardsDto as FlashcardCollectionSafeMissingCardsDto,
+	FlashcardCollectionSafeDto,
+} from "./dto/flashcards-safe.dto";
 import { FlashcardCollectionsService } from "./flashcard-collections.service";
-import { CreateFlashcardCollectionDto } from "./dto/create-flashcard-collections.dto";
+import { CreateFlashcardCollectionDto } from "./dto/create.dto";
+import { CreateFlashcardsDto } from "src/card/dto/create-cards.dto";
 
 @Controller("flashcard-collections")
 export class FlashcardCollectionsController {
@@ -15,9 +19,9 @@ export class FlashcardCollectionsController {
 	async create(
 		@GetUserId() userId: string,
 		@Body() createFlashcardCollectionDto: CreateFlashcardCollectionDto,
-	): Promise<FlashcardCollectionSafeDto> {
+	): Promise<FlashcardCollectionSafeMissingCardsDto> {
 		return toPlainToInstance(
-			FlashcardCollectionSafeDto,
+			FlashcardCollectionSafeMissingCardsDto,
 			await this.flashcardCollectionService.create(
 				userId,
 				createFlashcardCollectionDto,
@@ -25,15 +29,29 @@ export class FlashcardCollectionsController {
 		);
 	}
 
-	// @Post()
-	// async createFlashcard(@GetUserId() userId: string, CreateFlashcardFlashcardCollectionsDto): {
-	//     return toPlainToInstance(CreateFlashcardFlashcardCollectionsDto, this.FlashcardCollectionsService.createFlashcard())
-	// }; // Crate a new Flashcard inside FlashcardCollection.
+	@Get()
+	async findAll(
+		@GetUserId() userId: string,
+	): Promise<FlashcardCollectionSafeMissingCardsDto[]> {
+		return toPlainToInstance(
+			FlashcardCollectionSafeMissingCardsDto,
+			await this.flashcardCollectionService.findAll(userId),
+		);
+	}
 
-	// @Get()
-	// async findAll(@GetUserId() userId: string, FindAllFlashcardCollectionsDto): {
-	//     return toPlainToInstance(FindAllFlashcardCollectionsDto, this.FlashcardCollectionsService.findAll())
-	// }; // List all FlashcardCollections of user.
+	@Post("/flashcards")
+	async createFlashcard(
+		@GetUserId() userId: string,
+		@Body() createFlashcardDto: CreateFlashcardsDto,
+	): Promise<FlashcardCollectionSafeDto> {
+		return toPlainToInstance(
+			FlashcardCollectionSafeDto,
+			await this.flashcardCollectionService.createFlashcard(
+				userId,
+				createFlashcardDto,
+			),
+		);
+	}
 
 	// @Get()
 	// async findOne(@GetUserId() userId: string, FindOneFlashcardCollectionsDto): {
@@ -53,5 +71,5 @@ export class FlashcardCollectionsController {
 	// @Get()
 	// async findFlashcards(@GetUserId() userId: string, FindFlashcardsFlashcardCollectionsDto): {
 	//     return toPlainToInstance(FindFlashcardsFlashcardCollectionsDto, this.FlashcardCollectionsService.findFlashcards())
-	// }; // List all Flashcards of a FlashcardCollection.
+	// }; // List all Flashcards of a FlashcardCollection
 }
