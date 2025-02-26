@@ -7,12 +7,7 @@ import {
 	UpdateDateColumn,
 } from "typeorm";
 import { User } from "./user.entity";
-
-export enum Visibility {
-	PUBLIC = "public",
-	PRIVATE = "private",
-	FRIENDS_ONLY = "friends_only",
-}
+import { Visibility } from "./visibility.interfaces";
 
 @Entity("annotations")
 export class Annotation {

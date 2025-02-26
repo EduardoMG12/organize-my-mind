@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Put } from "@nestjs/common";
 import { AnnotationsService } from "./annotations.service";
 import { CreateAnnotationDto } from "./dto/create.dto";
-import { toPlainToInstance } from "src/utils/toPlainToInstance";
+import { toPlainToInstance } from "src/common/utils/toPlainToInstance";
 import { AnnotationSafeDto } from "./dto/annotationSafe.dto";
 import {
 	ApiBody,
@@ -10,7 +10,7 @@ import {
 	ApiResponse,
 	ApiTags,
 } from "@nestjs/swagger";
-import { GetUserId } from "src/decorators/getUserId";
+import { GetUserId } from "src/common/decorators/getUserId.decorator";
 import { UpdateAnnotationDto } from "./dto/update.dto";
 import { DeleteAnnotationDto } from "./dto/delete.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";

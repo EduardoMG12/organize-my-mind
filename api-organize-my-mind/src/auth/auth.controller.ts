@@ -4,7 +4,7 @@ import { LoginDto } from "./dto/login.dto";
 import { RegisterDto } from "./dto/register.dto";
 import { Public } from "./decorators/public.decorator";
 import { SafeUser } from "./dto/safeUser.dto";
-import { toPlainToInstance } from "src/utils/toPlainToInstance";
+import { toPlainToInstance } from "src/common/utils/toPlainToInstance";
 import { AccessToken } from "./dto/accessToken.dto";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 // read about @SerializeOptionsType for returns controller include plainToInstance global for Exclude and Expose

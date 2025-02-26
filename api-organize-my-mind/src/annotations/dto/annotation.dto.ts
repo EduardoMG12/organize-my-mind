@@ -1,10 +1,5 @@
 import { Expose } from "class-transformer";
-
-export enum Visibility {
-	PUBLIC = "public",
-	PRIVATE = "private",
-	FRIENDS_ONLY = "friends_only",
-}
+import { Visibility } from "src/common/interfaces/visibility.interfaces";
 
 export class AnnotationDto {
 	@Expose()

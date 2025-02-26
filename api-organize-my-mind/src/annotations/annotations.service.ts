@@ -7,7 +7,7 @@ import {
 	AnnotationNotFoundException,
 	RestoreAnnotationNotFoundException,
 	TitleRequiredException,
-} from "src/execeptions/annotations.exception";
+} from "src/common/exceptions/annotations.exception";
 import { UpdateOrderDto } from "./dto/update-order.dto";
 import { UpdateAnnotationDto } from "./dto/update.dto";
 import { AnnotationSafeDto } from "./dto/annotationSafe.dto";

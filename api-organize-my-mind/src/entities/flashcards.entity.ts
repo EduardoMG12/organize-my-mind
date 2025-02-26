@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { User } from "./user.entity";
 import { Flashcard } from "./flashcard.entity";
+import { Visibility } from "./visibility.interfaces";
 
 @Entity("flashcard_collection")
 export class FlashcardCollection {
@@ -27,13 +28,13 @@ export class FlashcardCollection {
 	)
 	owner: User;
 
-	@Column()
-	visibility: string;
+	@Column({ type: "enum", enum: Visibility, default: "PRIVATE" })
+	visibility: Visibility;
 
 	@Column()
 	position: number;
 
-	@Column()
+	@Column({ default: true })
 	isActive: boolean;
 
 	@CreateDateColumn()
