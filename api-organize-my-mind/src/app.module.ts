@@ -7,9 +7,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from "./auth/auth.module";
 import { AnnotationsModule } from "./annotations/annotations.module";
-import { FlashcardCollectionsService } from "./flashcard-collections/flashcard-collections.service";
-import { FlashcardCollectionsController } from "./flashcard-collections/flashcard-collections.controller";
 import { FlashcardCollectionsModule } from "./flashcard-collections/flashcard-collections.module";
+import { CardModule } from "./card/card.module";
 
 @Module({
 	imports: [
@@ -31,6 +30,7 @@ import { FlashcardCollectionsModule } from "./flashcard-collections/flashcard-co
 		AuthModule,
 		AnnotationsModule,
 		FlashcardCollectionsModule,
+		CardModule,
 	],
 	controllers: [],
 	providers: [AppService],
