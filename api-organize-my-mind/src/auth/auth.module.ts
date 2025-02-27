@@ -6,6 +6,7 @@ import { PassportModule } from "@nestjs/passport";
 import { UsersModule } from "../users/users.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtStrategy } from "./estrategies/jwt.strategy";
+import { BcryptAdapter } from "src/common/adapter/bcrypt.adapter";
 
 @Module({
 	imports: [
@@ -22,7 +23,7 @@ import { JwtStrategy } from "./estrategies/jwt.strategy";
 		}),
 	],
 	controllers: [AuthController],
-	providers: [AuthService, JwtStrategy],
+	providers: [AuthService, JwtStrategy, BcryptAdapter],
 	exports: [AuthService, JwtStrategy],
 })
 export class AuthModule {}
