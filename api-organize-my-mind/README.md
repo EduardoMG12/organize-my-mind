@@ -26,23 +26,15 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
-
-```bash
-$ pnpm install
-```
-
 ## Compile and run the project
 
 ```bash
 # development
-$ pnpm run start
+$ docker-compose up -d
 
 # watch mode
-$ pnpm run start:dev
+$ docker-compose up
 
-# production mode
-$ pnpm run start:prod
 ```
 
 ## Run tests
@@ -58,42 +50,79 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
-## Deployment
+# Organize My Mind Backend API
+#### Project Description
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Organize My Mind is a backend API designed to power a personal knowledge management and organization application. This API provides the core functionality for managing and structuring your thoughts, notes, flashcards, annotations, and potentially other organizational tools.  Built with NestJS, this backend emphasizes a clean architecture, maintainability, and scalability.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+#### Technologies Used
+- Backend Framework: NestJS (Node.js framework for building efficient and scalable server-side applications)
+- Database: MySQL (Relational database for persistent data storage)
+- Containerization: Docker and Docker Compose (For easy setup, consistent development environment, and deployment)
+- Package Manager: pnpm (Fast, disk space efficient package manager for Node.js)
+- Linter & Formatter: Biome (For code linting, formatting, and ensuring code quality and consistency)
+Prerequisites
+
+##### Before you begin, ensure you have the following installed:
+
+- Docker and Docker Compose
+- Node.js v23.8.0+
+- pnpm v10.4.1+
+##### Recommended IDE Extension:
+
+- Biome Extension: For optimal code linting and formatting, it is highly recommended to install the Biome extension for your code editor (e.g., VS Code). This extension will ensure your code adheres to the project's linting rules and formatting styles, contributing to a consistent and high-quality codebase.
+
+##### Getting Started - Development Setup
+- Clone the repository:
+
+```Bash
+
+$ git clone <repository_url>
+$ cd <repository_directory>/api-organize-my-mind
+
+```
+- Start the development environment with Docker Compose:
+
+From the root project directory (containing docker-compose.yml), run:
+
+## Compile and run the project
 
 ```bash
-$ pnpm install -g mau
-$ mau deploy
+# development
+$ docker-compose up -d
+
+# watch mode
+$ docker-compose up
+
 ```
+##### This command will:
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Build the Docker image for the API service.
+Start the MySQL database container (db) and the API container (api).
+Link the containers so the API can connect to the database.
+Start the API in development mode (pnpm start:dev) inside the container.
+Access the API:
 
-## Resources
+##### Once the containers are running, the API will be accessible at:
 
-Check out a few resources that may come in handy when working with NestJS:
+- http://localhost:3000
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+##### Development Notes
+Database Configuration: Database connection details are configured through environment variables in the docker-compose.yml file and accessed by the NestJS application.
 
-## Support
+Hot Reloading: The API container is configured for hot reloading in development mode. Any changes you make to the API code in the ./api-organize-my-mind directory will automatically trigger a server restart within the container.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Linting and Formatting: Ensure you have the Biome extension installed in your code editor to benefit from automatic code linting and formatting as you develop. Run pnpm biome:check and pnpm biome:format to manually check and format your code.
 
-## Stay in touch
+Stopping the Environment: To stop the Docker Compose environment, in your terminal, press Ctrl+C and then run:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```Bash
 
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+$ docker-compose down
+# add flag -v if you want delete data of database
+$ docker-compose down -d
+```
+##### Further Steps
+Explore the NestJS application code in the ./api-organize-my-mind directory.
+Refer to the NestJS documentation for further information on framework features and development practices.
+Start building amazing features to organize your mind!
