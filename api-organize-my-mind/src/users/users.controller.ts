@@ -6,8 +6,8 @@ import {
 	ApiResponse,
 	ApiTags,
 } from "@nestjs/swagger";
-import { SafeUser } from "src/auth/dto/safeUser.dto";
-import { toPlainToInstance } from "src/common/utils/toPlainToInstance";
+import { SafeUser } from "../auth/dto/safeUser.dto";
+import { toPlainToInstance } from "../common/utils/toPlainToInstance";
 
 @ApiTags("Users")
 @ApiBearerAuth()
